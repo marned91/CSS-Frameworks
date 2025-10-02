@@ -11,126 +11,262 @@ authGuard();
 setLogoutListener();
 
 /**
- * Fetches and displays a list of posts on the page.
- * If a search query is provided, it filters the posts based on their title. Search query from title only.
- * It fetches the latest posts from the API, filters them if needed.
- *
- * @param {string} [query=""] - The search query to filter posts by title (case-insensitive).
- * @returns {Promise<void>} A promise that resolves when posts have been displayed.
- * @throws {Error} If the posts could not be fetched.
- *
+ * Number of posts to request per page.
+ * @type {number}
  */
+const POSTS_PER_PAGE = 12;
 
-async function displayPosts(query = '') {
-  const postContainer = document.querySelector('#all-posts');
+/**
+ * Current page number (1-based).
+ * @type {number}
+ */
+let currentPageNumber = 1;
+
+/**
+ * Maximum number of pages the UI will allow.
+ * @type {number}
+ */
+const MAX_VISIBLE_PAGES = 50;
+
+/**
+ * Latest pagination metadata returned by the API.
+ * Mirrors the `meta` object from the endpoint.
+ * @type {{
+ *   isFirstPage: boolean,
+ *   isLastPage: boolean,
+ *   currentPage: number,
+ *   previousPage: number|null,
+ *   nextPage: number|null,
+ *   pageCount: number,
+ *   totalCount: number
+ * }}
+ */
+let paginationInfo = {
+  isFirstPage: true,
+  isLastPage: true,
+  currentPage: 1,
+  previousPage: null,
+  nextPage: null,
+  pageCount: 1,
+  totalCount: 0,
+};
+
+const previousPageButton = document.getElementById('prevBtn');
+const nextPageButton = document.getElementById('nextBtn');
+const paginationStatusText = document.getElementById('pageInfo');
+
+/**
+ * Update the pagination UI state (buttons and status text), capped by MAX_VISIBLE_PAGES.
+ * Displays status as "current/total" (e.g., "1/50").
+ * @param {object} meta - Pagination info returned by the API.
+ * @param {boolean} [meta.isFirstPage]
+ * @param {boolean} [meta.isLastPage]
+ * @param {number}  [meta.currentPage]
+ * @param {number|null} [meta.previousPage]
+ * @param {number|null} [meta.nextPage]
+ * @param {number}  [meta.pageCount]
+ * @param {number}  [meta.totalCount]
+ * @returns {void}
+ */
+function updatePaginationUI(meta) {
+  paginationInfo = meta || paginationInfo;
+
+  const current = meta?.currentPage ?? currentPageNumber;
+  const totalPagesFromMeta = meta?.pageCount ?? 1;
+  const effectivePageCount = Math.min(totalPagesFromMeta, MAX_VISIBLE_PAGES);
+
+  if (previousPageButton) {
+    previousPageButton.disabled =
+      current <= 1 || meta?.previousPage == null || Boolean(meta?.isFirstPage);
+  }
+
+  if (nextPageButton) {
+    nextPageButton.disabled =
+      current >= effectivePageCount ||
+      meta?.nextPage == null ||
+      Boolean(meta?.isLastPage);
+  }
+
+  if (paginationStatusText) {
+    paginationStatusText.textContent = `${current}/${effectivePageCount}`;
+  }
+}
+
+/**
+ * Scroll to the top of the posts list (smooth).
+ * @returns {void}
+ */
+function scrollToTopOfPostList() {
+  const container = document.querySelector('#all-posts');
+  if (container && typeof container.scrollIntoView === 'function') {
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+/**
+ * Navigate to a specific page number and re-render the list, capped by MAX_VISIBLE_PAGES.
+ * @param {number} pageNumber - Target page (1-based).
+ * @param {string} [searchQuery=""] - Optional title filter (client-side).
+ * @returns {Promise<void>}
+ */
+function navigateToPage(pageNumber, searchQuery = '') {
+  const knownTotalPages = paginationInfo?.pageCount ?? Number.POSITIVE_INFINITY;
+  const maxAllowedPage = Math.min(knownTotalPages, MAX_VISIBLE_PAGES);
+
+  const clampedPage = Math.min(Math.max(1, pageNumber), maxAllowedPage);
+  currentPageNumber = clampedPage;
+
+  scrollToTopOfPostList();
+  return renderPosts(searchQuery);
+}
+
+/**
+ * Fetch and render the posts list on the home page.
+ * Client-side search filters titles within the current page only.
+ *
+ * @param {string} [searchQuery=""] - Case-insensitive title filter.
+ * @returns {Promise<void>}
+ * @throws {Error} If fetching posts fails.
+ */
+async function renderPosts(searchQuery = '') {
+  const postListContainer = document.querySelector('#all-posts');
 
   try {
     showSkeletonLoader();
 
-    const { data } = await readPosts(12, 1);
+    const { data, meta } = await readPosts(POSTS_PER_PAGE, currentPageNumber);
 
-    const filteredPosts = query
+    const visiblePosts = searchQuery
       ? data.filter((post) =>
-          post.title.toLowerCase().includes(query.toLowerCase())
+          (post.title || '').toLowerCase().includes(searchQuery.toLowerCase())
         )
       : data;
 
-    postContainer.innerHTML = '';
+    postListContainer.innerHTML = '';
 
-    filteredPosts.forEach((post) => {
-      const postElement = createPostElement(post);
-      postContainer.appendChild(postElement);
+    visiblePosts.forEach((post) => {
+      const postCardElement = createPostCardElement(post);
+      postListContainer.appendChild(postCardElement);
     });
-    if (filteredPosts.length === 0) {
-      const noSearchResultMessage = document.createElement('p');
-      noSearchResultMessage.textContent =
+
+    if (visiblePosts.length === 0) {
+      const emptyMessage = document.createElement('p');
+      emptyMessage.textContent =
         'No posts found. Try searching for something else!';
-      postContainer.appendChild(noSearchResultMessage);
+      postListContainer.appendChild(emptyMessage);
+    }
+
+    if (meta) {
+      updatePaginationUI(meta);
     }
   } catch (error) {
-    showAlert('Error fetching posts:' + error.message, 'error');
+    showAlert('Error fetching posts: ' + error.message, 'error');
   } finally {
     hideSkeletonLoader();
   }
 }
 
 /**
- * Creates an HTML element for a single post and its content.
+ * Create a DOM node representing a single post card.
  *
  * @param {Object} post - The post data object.
  * @param {string} post.title - The title of the post.
  * @param {string} post.body - The body content of the post.
- * @param {string[]} [post.tags] - The tags associated with the post.
- * @param {string} post.created - The creation date of the post.
- * @param {string} post.id - The ID of the post.
- * @returns {HTMLElement} The created HTML element representing the post.
+ * @param {string[]} [post.tags] - Tags associated with the post.
+ * @param {string} post.created - ISO date string when the post was created.
+ * @param {string} post.id - The unique post ID.
+ * @returns {HTMLElement} The post card element.
  *
  * @example
- * const postElement = createPostElement({ title: "My Post", body: "This is a post", tags: ["tag1"], created: "2024-11-29T10:00:00Z", id: "123" });
- * document.body.appendChild(postElement); // Adds the post element to the page
+ * const el = createPostCardElement({ title: "Hello", body: "World", tags: [], created: "2024-11-29T10:00:00Z", id: "123" });
+ * document.body.appendChild(el);
  */
-function createPostElement(post) {
-  const postElement = document.createElement('div');
-  postElement.classList.add('post');
+function createPostCardElement(post) {
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('post');
 
-  const imageElement = document.createElement('img');
-  imageElement.src = post.media?.url || '/images/default-post-image.png';
-  imageElement.alt = post.title || 'Post Image';
-  imageElement.classList.add('post-image');
-  postElement.appendChild(imageElement);
+  const image = document.createElement('img');
+  image.src = post.media?.url || '/images/default-post-image.png';
+  image.alt = post.title || 'Post Image';
+  image.classList.add('post-image');
+  wrapper.appendChild(image);
 
   const title = document.createElement('h3');
   title.textContent = post.title;
   title.classList.add('post-h3');
-  postElement.appendChild(title);
+  wrapper.appendChild(title);
 
-  const bodySippet = document.createElement('p');
+  const bodySnippet = document.createElement('p');
   const snippetText = post.body
     ? post.body.slice(0, 100) + '...'
     : 'No content available';
-  bodySippet.textContent = snippetText;
-  bodySippet.classList.add('post-body');
-  postElement.appendChild(bodySippet);
+  bodySnippet.textContent = snippetText;
+  bodySnippet.classList.add('post-body');
+  wrapper.appendChild(bodySnippet);
 
-  const date = document.createElement('p');
-  const postDate = new Date(post.created);
-  date.textContent = `Posted ${postDate.toLocaleDateString()}`;
-  date.classList.add('post-date');
-  postElement.appendChild(date);
+  const createdDate = document.createElement('p');
+  const created = new Date(post.created);
+  createdDate.textContent = `Posted ${created.toLocaleDateString()}`;
+  createdDate.classList.add('post-date');
+  wrapper.appendChild(createdDate);
 
-  const tagsElement = document.createElement('div');
-  tagsElement.classList.add('snippet-post-tags');
+  const tagsContainer = document.createElement('div');
+  tagsContainer.classList.add('snippet-post-tags');
 
   if (Array.isArray(post.tags) && post.tags.length > 0) {
     post.tags.forEach((tag) => {
-      const tagSpan = document.createElement('span');
-      tagSpan.textContent = tag;
-      tagSpan.classList.add('snippet-post-tag-item');
-      tagsElement.appendChild(tagSpan);
+      const tagPill = document.createElement('span');
+      tagPill.textContent = tag;
+      tagPill.classList.add('snippet-post-tag-item');
+      tagsContainer.appendChild(tagPill);
     });
   } else {
-    const noTagsText = document.createElement('span');
-    noTagsText.textContent = 'No tags🥲';
-    noTagsText.classList.add('snippet-post-no-tags');
-    tagsElement.appendChild(noTagsText);
+    const noTags = document.createElement('span');
+    noTags.textContent = 'No tags';
+    noTags.classList.add('snippet-post-no-tags');
+    tagsContainer.appendChild(noTags);
   }
-  postElement.appendChild(tagsElement);
+  wrapper.appendChild(tagsContainer);
 
-  postElement.addEventListener('click', () => {
+  wrapper.addEventListener('click', () => {
     window.location.href = `/post/?id=${post.id}`;
   });
 
-  return postElement;
+  return wrapper;
 }
 
 const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
 
-const handleSearch = async () => {
-  const query = searchInput.value.trim();
-  displayPosts(query || '');
-};
+/**
+ * Handle search action: resets to page 1 and re-renders with the query.
+ * @returns {Promise<void>}
+ */
+function handleSearchClick() {
+  const query = (searchInput?.value || '').trim();
+  currentPageNumber = 1;
+  return renderPosts(query || '');
+}
 
-searchButton.addEventListener('click', handleSearch);
+if (searchButton) {
+  searchButton.addEventListener('click', handleSearchClick);
+}
 
-displayPosts();
+if (previousPageButton) {
+  previousPageButton.addEventListener('click', () => {
+    const targetPage = paginationInfo?.previousPage ?? currentPageNumber - 1;
+    navigateToPage(targetPage, (searchInput?.value || '').trim());
+  });
+}
+
+if (nextPageButton) {
+  nextPageButton.addEventListener('click', () => {
+    const targetPage = paginationInfo?.nextPage ?? currentPageNumber + 1;
+    navigateToPage(targetPage, (searchInput?.value || '').trim());
+  });
+}
+
+/** Initial render */
+renderPosts();
