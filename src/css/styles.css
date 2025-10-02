@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .user-post,
+  .post {
+    @apply bg-white p-10 space-y-4 flex-col items-center cursor-pointer;
+  }
+
+  .user-post,
+  .post,
+  .full-post-image,
+  .edit-button,
+  .delete-button {
+    @apply rounded-3xl;
+  }
+
+  .user-post,
+  .post {
+    @apply shadow-3xl;
+  }
+
+  .full-post-title {
+    @apply font-h1 text-3xl mb-6;
+  }
+
+  .full-post-title,
+  .user-post-title,
+  .post-h3 {
+    @apply font-bold;
+  }
+
+  .full-post-author {
+    @apply font-medium mb-2;
+  }
+
+  .full-post-body-empty {
+    @apply hidden;
+  }
+
+  .full-post-author {
+    @apply italic;
+  }
+
+  .full-post-date,
+  .post-date {
+    @apply text-xs text-gray-600;
+  }
+
+  .full-post-date,
+  .full-post-image {
+    @apply mb-8;
+  }
+
+  .full-post-image {
+    @apply max-h-[300px] object-cover;
+  }
+
+  .full-post-image,
+  .post-image {
+    @apply w-full;
+  }
+
+  .full-post-body,
+  .post-body {
+    @apply text-gray-800 mb-6;
+  }
+
+  .full-post-body,
+  .user-post-snippet,
+  .post-body {
+    @apply text-base;
+  }
+
+  .full-post-body-container {
+    @apply bg-post-body border border-gray-200 rounded-lg p-6 mb-10 shadow-xl;
+  }
+
+  .full-post-body {
+    @apply text-base text-gray-600;
+  }
+
+  .full-post-tags,
+  .snippet-post-tags {
+    @apply flex flex-wrap gap-2 mt-4;
+  }
+
+  .user-post-title,
+  .post-h3 {
+    @apply font-headlines-nav text-xl;
+  }
+
+  .user-post-snippet,
+  .post-body,
+  .user-post-tags,
+  .user-post-date,
+  .post-date,
+  .post-tags,
+  .full-post-author,
+  .tag-item,
+  .no-tags,
+  .snippet-post-tag-item,
+  .snippet-post-no-tags {
+    @apply font-body;
+  }
+
+  .user-post-tags,
+  .user-post-date,
+  .post-tags,
+  .full-post-author,
+  .tag-item,
+  .no-tags,
+  .snippet-post-tag-item,
+  .snippet-post-no-tags {
+    @apply text-sm;
+  }
+
+  .edit-button,
+  .delete-button {
+    @apply bg-brand-dark text-white px-7 py-2 font-semibold transition-all duration-300 ease-in-out mr-1;
+  }
+
+  .edit-button:hover,
+  .delete-button:hover {
+    @apply bg-accent transform scale-100;
+  }
+
+  .tag-item,
+  .no-tags,
+  .snippet-post-tag-item,
+  .snippet-post-no-tags {
+    @apply bg-blue-200 text-accent;
+  }
+
+  .snippet-post-tag-item,
+  .snippet-post-no-tags,
+  .tag-item,
+  .no-tags {
+    @apply px-3 rounded-full shadow-md;
+  }
+
+  .tag-item,
+  .no-tags {
+    @apply p-2;
+  }
+
+  .snippet-post-tag-item,
+  .snippet-post-no-tags {
+    @apply py-1 px-2;
+  }
+
+  .post,
+  .user-post {
+    @apply transform transition duration-300 ease-out;
+  }
+
+  .post:hover,
+  .user-post:hover {
+    @apply scale-105;
+  }
+
+  .edit-button:focus,
+  .delete-button:focus {
+    @apply outline-none ring-2 ring-offset-2 ring-brand-dark;
+  }
+
+  .post-image {
+    @apply h-48 object-cover;
+  }
+}

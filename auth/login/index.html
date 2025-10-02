@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Login to BLUB" />
+    <title>BLUB | Log In</title>
+    <script type="module" src="/src/app.js"></script>
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+  </head>
+  <body
+    class="min-h-screen grid grid-rows-[auto_1fr_auto] overflow-x-hidden bg-brand-light"
+  >
+    <header>
+      <div
+        class="bg-accent container mx-auto flex items-center justify-between px-10 rounded-full mt-5 py-3"
+      >
+        <a href="/auth/">
+          <img
+            src="/images/blub-high-resolution-logo-transparent-white.png"
+            alt="BLUB logo"
+            class="lg:w-44 md:w-44 h-auto xs:w-20"
+          />
+        </a>
+        <nav class="nav">
+          <ul
+            class="flex xl:space-x-10 lg:space-x-8 md:space-x-6 sm:space-x-6 xs:space-x-4 text-white sm:flex-nowrap"
+          >
+            <li>
+              <a
+                href="/auth/"
+                class="font-headlines-nav sm:text-base text-sm hover:underline hover:decoration-white hover:decoration-2"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="/auth/login/"
+                class="font-headlines-nav sm:text-base text-sm underline hover:underline hover:decoration-white hover:decoration-2"
+                >Log In</a
+              >
+            </li>
+            <li>
+              <a
+                href="/auth/register/"
+                class="font-headlines-nav font-bold bg-accent-light text-black px-5 py-2.5 rounded-full sm:text-base text-sm hover:bg-highlight"
+                >JOIN US!</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="flex items-center justify-center">
+      <div
+        id="alert-container"
+        class="absolute top-20 inset-x-0 flex justify-center"
+      ></div>
+      <section
+        class="bg-white p-10 rounded-[3rem] mx-auto flex lg:max-w-5xl items-center justify-center lg:justify-between flex-col-reverse lg:flex-row sm:m-10 xs:m-10"
+      >
+        <div>
+          <img
+            src="/images/Happy Bunch - Login.png"
+            class="w-full lg:w-[80%] xl:w-[80%] h-auto"
+            alt="Drawn illustration of a new user logging in on a computer. User is purple and smiling waring a green hat with ears"
+          />
+        </div>
+        <div
+          class="bg-brand text-white rounded-[4rem] pt-8 pb-8 px-10 max-w-lg w-[80%]"
+        >
+          <h1 class="font-h1 text-3xl font-bold mb-6 text-center">Log In</h1>
+          <form name="login" id="login-form" class="space-y-6">
+            <fieldset>
+              <div>
+                <label for="email" class="block text-black font-body"
+                  >Email</label
+                >
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  class="w-full bg-white text-black font-body rounded-full px-4 py-2 focus:outline-none focus:ring focus:ring-accent"
+                />
+              </div>
+              <div>
+                <label for="password" class="block text-black font-body mt-10"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  required
+                  class="w-full bg-white text-black font-body rounded-full px-4 py-2 focus:outline-none focus:ring focus:ring-accent"
+                />
+              </div>
+              <button
+                type="submit"
+                class="font-semibold bg-black text-white font-headlines-nav px-6 py-2 rounded-full w-full transition duration-300 ease-out hover:scale-105 mt-10"
+              >
+                To BLUB!
+              </button>
+            </fieldset>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer class="bg-accent py-5 px-10 w-full mt-auto">
+      <div class="text-white flex justify-between gap-2">
+        <img
+          src="/images/blub-high-resolution-logo-transparent-white.png"
+          alt="BLUB logo"
+          class="w-60 h-auto"
+        />
+        <div>
+          <p class="font-headlines-nav cursor-pointer">About BLUB</p>
+          <p class="font-headlines-nav cursor-pointer">Terms&Conditions</p>
+          <p class="font-headlines-nav cursor-pointer">
+            BLUB's Code Of Conduct
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
