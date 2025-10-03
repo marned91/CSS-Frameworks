@@ -2,10 +2,6 @@
 // In order to add additional pages, you will need to implement them below
 // You may change the behaviour or approach of this file if you choose
 export default async function router(pathname = window.location.pathname) {
-  if (!pathname || pathname === '/index.html') pathname = '/';
-  if (pathname.endsWith('//')) pathname = pathname.slice(0, -1);
-
-  console.log('[router] route', pathname);
   switch (pathname) {
     case '/':
       await import('./views/home.js');
