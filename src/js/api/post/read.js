@@ -150,11 +150,10 @@ export async function readPostsByUser(
   }
 
   const token = localStorage.getItem('token');
-
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
     'X-Noroff-API-Key': API_KEY,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
   try {
