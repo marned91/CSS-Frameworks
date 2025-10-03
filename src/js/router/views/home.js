@@ -1,4 +1,3 @@
-import { authGuard } from '../../utilities/authGuard';
 import { setLogoutListener } from '../../ui/global/logout';
 import { readPosts } from '../../api/post/read';
 import { showAlert } from '../../utilities/alertUser';
@@ -7,7 +6,6 @@ import {
   hideSkeletonLoader,
 } from '../../utilities/skeletonLoader';
 
-authGuard();
 setLogoutListener();
 
 /**
