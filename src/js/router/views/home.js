@@ -1,4 +1,5 @@
 import { setLogoutListener } from '../../ui/global/logout';
+import { authGuard } from '../../utilities/authGuard';
 import { readPosts } from '../../api/post/read';
 import { showAlert } from '../../utilities/alertUser';
 import {
@@ -6,6 +7,7 @@ import {
   hideSkeletonLoader,
 } from '../../utilities/skeletonLoader';
 
+authGuard();
 setLogoutListener();
 
 console.log('[home] init');
