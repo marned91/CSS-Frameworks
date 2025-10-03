@@ -8,6 +8,8 @@ import {
 
 setLogoutListener();
 
+console.log('[home] init');
+
 /**
  * Number of posts to request per page.
  * @type {number}
