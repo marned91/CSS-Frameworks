@@ -6,11 +6,7 @@ import {
   hideSkeletonLoader,
 } from '../../utilities/skeletonLoader';
 
-try {
-  setLogoutListener();
-} catch (e) {
-  console.warn('[home] setLogoutListener (non-blocking):', e);
-}
+setLogoutListener();
 
 /**
  * Number of posts to request per page.
