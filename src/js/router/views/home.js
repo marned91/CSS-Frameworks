@@ -136,7 +136,14 @@ async function renderPosts(searchQuery = '') {
   try {
     showSkeletonLoader();
 
-    const { data, meta } = await readPosts(POSTS_PER_PAGE, currentPageNumber);
+    const token = localStorage.getItem('token');
+    const includeAuthor = Boolean(token);
+    const { data, meta } = await readPosts(
+      POSTS_PER_PAGE,
+      currentPageNumber,
+      undefined,
+      includeAuthor
+    );
 
     const visiblePosts = searchQuery
       ? data.filter((post) =>
