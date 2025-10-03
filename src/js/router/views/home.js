@@ -1,10 +1,10 @@
+import { setLogoutListener } from '../../ui/global/logout';
 import { readPosts } from '../../api/post/read';
 import { showAlert } from '../../utilities/alertUser';
 import {
   showSkeletonLoader,
   hideSkeletonLoader,
 } from '../../utilities/skeletonLoader';
-import { setLogoutListener } from '../../ui/global/logout';
 
 try {
   setLogoutListener();
