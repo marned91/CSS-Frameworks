@@ -25,9 +25,9 @@
             class="lg:w-44 md:w-44 h-auto xs:w-20"
           />
         </a>
-        <nav class="nav ml-auto">
+        <nav class="ml-auto">
           <ul
-            class="flex flex-nowrap items-center justify-end gap-8 text-white"
+            class="flex flex-nowrap items-center justify-end gap-8 text-white w-auto"
           >
             <li>
               <a
@@ -37,6 +37,8 @@
                 >Home</a
               >
             </li>
+
+            <!-- only when logged OUT -->
             <li>
               <a
                 id="login-link"
@@ -53,6 +55,8 @@
                 >JOIN US!</a
               >
             </li>
+
+            <!-- only when logged IN -->
             <li>
               <button
                 type="button"
