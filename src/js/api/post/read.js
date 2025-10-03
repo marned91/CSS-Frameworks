@@ -24,8 +24,8 @@ export async function readPost(id, includeAuthor = false) {
 
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
     'X-Noroff-API-Key': API_KEY,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
   try {
