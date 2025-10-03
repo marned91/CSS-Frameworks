@@ -1,0 +1,1 @@
+import{s as t}from"./constants-DQWCF818.js";function e(){localStorage.removeItem("token"),localStorage.removeItem("user"),t("You have been logged out","info"),setTimeout(()=>window.location.pathname="/auth/",2e3)}function u(){const o=document.querySelector("#logout-button");o&&o.addEventListener("click",()=>{e()})}export{u as s};

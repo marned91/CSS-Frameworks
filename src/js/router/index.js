@@ -1,8 +1,24 @@
+/**
+ * Return pathname relative to the site root (removes BASE_URL prefix).
+ * @param {string} pathname
+ * @returns {string}
+ */
+function normalizePathname(pathname) {
+  const base = import.meta.env.BASE_URL || '/';
+  if (base !== '/' && pathname.startsWith(base)) {
+    const rest = pathname.slice(base.length);
+    return rest.startsWith('/') ? rest : `/${rest}`;
+  }
+  return pathname;
+}
+
 // This function controls which JavaScript file is loaded on which page
 // In order to add additional pages, you will need to implement them below
 // You may change the behaviour or approach of this file if you choose
 export default async function router(pathname = window.location.pathname) {
-  switch (pathname) {
+  const routePath = normalizePathname(pathname);
+
+  switch (routePath) {
     case '/':
       await import('./views/home.js');
       break;
