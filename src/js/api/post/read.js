@@ -86,8 +86,8 @@ export async function readPosts(
 
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
     'X-Noroff-API-Key': API_KEY,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
 
   try {
