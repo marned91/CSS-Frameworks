@@ -8,7 +8,9 @@ function applyAuthNavState() {
   const token = localStorage.getItem('token');
   const isLoggedIn = Boolean(token);
   const logoutButton = document.getElementById('logout-button');
-  const profileLink = document.getElementById('profile-link'); // add this id in HTML
+  const profileLink =
+    document.getElementById('profile-link') ||
+    document.querySelector('a[href="/profile/"]');
 
   const hide = (el) => el && el.classList.add('hidden');
   const show = (el) => el && el.classList.remove('hidden');
