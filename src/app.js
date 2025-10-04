@@ -8,34 +8,38 @@ function applyAuthNavState() {
   const token = localStorage.getItem('token');
   const isLoggedIn = Boolean(token);
 
-  const logoutButton = document.getElementById('logout-button');
-  const profileLink =
-    document.getElementById('profile-link') ||
-    document.querySelector('a[href="/profile/"]');
-
-  const loginLink =
-    document.getElementById('login-link') ||
-    document.querySelector('a[href="/auth/login/"]');
-  const joinLink =
-    document.getElementById('join-link') ||
-    document.querySelector('a[href="/auth/register/"]');
+  const loginItem =
+    document.getElementById('login-item') ||
+    document.getElementById('login-link')?.closest('li');
+  const joinItem =
+    document.getElementById('join-item') ||
+    document.getElementById('join-link')?.closest('li');
+  const logoutItem =
+    document.getElementById('logout-item') ||
+    document.getElementById('logout-button')?.closest('li');
+  const profileItem =
+    document.getElementById('profile-item') ||
+    document.getElementById('profile-link')?.closest('li');
 
   const hide = (el) => el && el.classList.add('hidden');
   const show = (el) => el && el.classList.remove('hidden');
 
   if (isLoggedIn) {
-    show(logoutButton);
-    show(profileLink);
-    hide(loginLink);
-    hide(joinLink);
+    show(logoutItem);
+    show(profileItem);
+    hide(loginItem);
+    hide(joinItem);
   } else {
-    hide(logoutButton);
-    hide(profileLink);
-    show(loginLink);
-    show(joinLink);
+    hide(logoutItem);
+    hide(profileItem);
+    show(loginItem);
+    show(joinItem);
   }
-}
 
+  ['login-link', 'join-link', 'logout-button', 'profile-link'].forEach((id) =>
+    document.getElementById(id)?.classList.remove('hidden')
+  );
+}
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('[app] boot', window.location.pathname);
   applyAuthNavState();

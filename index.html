@@ -16,18 +16,18 @@
   >
     <header>
       <div
-        class="bg-accent container mx-auto flex items-center justify-between px-10 rounded-full mt-5 py-3"
+        class="bg-accent container mx-auto flex items-center justify-between px-5 md:px-10 rounded-full mt-5 py-3"
       >
         <a href="/">
           <img
             src="/images/blub-high-resolution-logo-transparent-white.png"
             alt="BLUB logo"
-            class="lg:w-44 md:w-44 h-auto xs:w-20"
+            class="h-auto w-20 lg:w-44 md:w-44"
           />
         </a>
         <nav class="ml-auto">
           <ul
-            class="flex flex-nowrap items-center justify-end gap-4 text-white w-auto"
+            class="flex xl:space-x-10 lg:space-x-8 md:space-x-6 space-x-4 text-white sm:flex-nowrap"
           >
             <li>
               <a
@@ -38,39 +38,39 @@
               >
             </li>
 
-            <!-- only when logged OUT -->
-            <li>
+            <li id="login-item">
               <a
                 id="login-link"
                 href="/auth/login/"
-                class="font-headlines-nav sm:text-base text-sm hover:underline hover:decoration-white hover:decoration-2 hidden"
+                class="font-headlines-nav sm:text-base text-sm hover:underline hover:decoration-white hover:decoration-2"
                 >Log In</a
               >
             </li>
-            <li>
+
+            <li id="join-item">
               <a
                 id="join-link"
                 href="/auth/register/"
-                class="font-headlines-nav font-bold bg-accent-light text-black px-5 py-2.5 rounded-full sm:text-base text-sm hover:bg-highlight hidden"
+                class="font-headlines-nav text-xs md:text-sm font-bold bg-accent-light text-black px-5 py-2.5 rounded-full sm:text-base hover:bg-highlight"
                 >JOIN US!</a
               >
             </li>
 
-            <!-- only when logged IN -->
-            <li>
+            <li id="logout-item" class="hidden">
               <button
                 type="button"
                 id="logout-button"
-                class="font-headlines-nav sm:text-base text-sm hover:underline hover:decoration-white hover:decoration-2 hidden"
+                class="font-headlines-nav sm:text-base text-sm hover:underline hover:decoration-white hover:decoration-2"
               >
                 Log Out
               </button>
             </li>
-            <li>
+
+            <li id="profile-item" class="hidden">
               <a
                 id="profile-link"
                 href="/profile/"
-                class="font-headlines-nav font-bold bg-accent-light text-black px-5 py-2.5 rounded-full sm:text-base text-sm hover:bg-highlight hidden min-w-[140px] text-center"
+                class="font-headlines-nav text-xs md:text-sm font-bold bg-accent-light text-black px-5 py-2.5 rounded-full sm:text-base hover:bg-highlight"
                 >MY PROFILE</a
               >
             </li>
