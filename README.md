@@ -113,7 +113,7 @@ Thank you for your understanding!
 [My Linkedin Page](https://www.linkedin.com/in/marte-n-18aab5101/)
 
 # Sources used in project
-- Unsplash for all images. Free/unlicensed images only
+- Blush https://blush.design/ for all illustrations/images. Free/unlicensed images only
 - Noroff's API documentation: https://docs.noroff.dev/docs/v2/social/posts 
 - https://flowbite.com/docs/components/skeleton/#default-skeleton
 - https://fontawesome.com/icons
