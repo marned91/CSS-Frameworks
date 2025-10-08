@@ -19,7 +19,7 @@ export default {
           DEFAULT: '#184D7A',
           dark: '#000000',
         },
-        highlight: '#CB88FF',
+        highlight: '#F56F51',
         'post-body': '#E0E6E5',
         'background-green': '#BDE3DB',
         'background-gray': '#D9D9D9',
