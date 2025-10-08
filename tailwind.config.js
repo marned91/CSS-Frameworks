@@ -16,13 +16,13 @@ export default {
         },
         accent: {
           light: '#6BD1B7',
-          DEFAULT: '#401FCA',
+          DEFAULT: '#184D7A',
           dark: '#000000',
         },
         highlight: '#CB88FF',
         'post-body': '#E0E6E5',
         'background-green': '#BDE3DB',
-        'background-purple': '#D5A8FF',
+        'background-gray': '#D9D9D9',
       },
       screens: {
         xs: '460px',
