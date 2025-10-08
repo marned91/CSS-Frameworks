@@ -1,5 +1,6 @@
 # BLUB: CSS Frameworks
-<img width="1424" height="749" alt="Skjermbilde 2025-10-06 kl  13 39 46" src="https://github.com/user-attachments/assets/2d74ca55-9684-47f6-a644-506e193c9d75" />
+<img width="1397" height="752" alt="Skjermbilde 2025-10-08 kl  21 24 53" src="https://github.com/user-attachments/assets/29042318-2d82-45a5-9155-c8674f84b729" />
+
 
 # Purpose
 
