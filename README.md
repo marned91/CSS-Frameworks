@@ -42,7 +42,7 @@ Through this project, I have demonstrated the following skills:
 
 As part of continuous improvement for *Portfolio 2*, the following enhancements were made:
 
-1. Live hosted page on [Netify](https://css-frameworks-mn.netlify.app/)
+1. Live hosted page on [Netlify](https://css-frameworks-mn.netlify.app/)
 2. **Improved Navigation:** Nav elements now update dynamically based on authentication state, showing relevant links for logged-in and logged-out users.  
 3. **Pagination Added:** Users can browse social posts across multiple pages, with automatic scrolling behavior and clear visual feedback.
 4. **New Design:** New main colors and images.
